@@ -3,7 +3,15 @@ name = "package-publishing-example"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-    "ruff>=0.11.0",
+authors = [
+    { name = "Rens Holmer", email = "8225367+holmrenser@users.noreply.github.com" },
 ]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+package-publishing-example = "package_publishing_example:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

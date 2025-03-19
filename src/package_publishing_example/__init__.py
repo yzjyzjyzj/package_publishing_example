@@ -1,6 +1,2 @@
-def main():
+def main() -> None:
     print("Hello from package-publishing-example!")
-
-
-if __name__ == "__main__":
-    main()
