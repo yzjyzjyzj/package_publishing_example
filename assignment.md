@@ -1,7 +1,7 @@
 # Python packaging workshop
 25.03.2025
 
-## Assignment 1
+## Assignment 1: python package management with uv
 In this assignment we will initialize a new python project using [uv](https://docs.astral.sh/uv/). Some of the things uv will do for us: structure/configure `pyproject.toml`, add/remove dependencies, manage python versions and virtual environments, run linters and tests, publish to pypi.
 
 ### step 1
@@ -41,3 +41,7 @@ This should give you a relatively barebones `pyproject.toml` file containing all
 
 ### Step 3
 We're going to add some code, and a linter to see whether our coding style adheres to some best-practice standards.
+
+## Assignment 2: Publishing a package to conda
+
+## Assignment 3: Miscellaneous tips and tricks with github
