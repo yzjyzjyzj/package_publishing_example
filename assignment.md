@@ -87,9 +87,18 @@ $ uv add pytest
 $ uv run pytest --doctest-modules src
 ```
 
+Note that we had to specify explicitly that we wanted pytest to run doctests. If you always want to do this, you can add the following lines to you `pyproject.toml`:
+
+```{toml}
+[pytest]
+addopts = --doctest-modules
+```
+
+This way pytest always runs with the doctest option enabled, so the command for running tests would simplify to `uv run pytest`. 
+
 ### Step 6
 
-Now that we have a functioning and tested codebase, let's start thinking about publishing to pypi. 
+Now that we have a functioning and tested codebase, let's start thinking about publishing to pypi!
 
 
 ## Assignment 2: Publishing a package to conda

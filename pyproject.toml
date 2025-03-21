@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.scripts]
-ppe = "package_publishing_example.cli:app"
+ppe = "package_publishing_example.cli:cli"
 
 [build-system]
 requires = ["hatchling", "uv-dynamic-versioning"]
