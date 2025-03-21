@@ -1,5 +1,7 @@
 # package_publishing_example
 [![PyPI version](https://badge.fury.io/py/package-publishing-example.svg)](https://pypi.org/project/package-publishing-example/)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/wur-bioinformatics/package-publishing-example/blob/main/example.ipynb)
+
 
 
 This repository contains an example python codebase with accompanying CLI to demonstrate how to set up and publish such a project with modern[^1] tools. 
