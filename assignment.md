@@ -37,10 +37,60 @@ Initialize a new python project using uv. In this workshop we will focus on buil
 $ uv init --package
 ```
 
-This should give you a relatively barebones `pyproject.toml` file containing all your projects configuration. The following steps add functionality and dependencies to the project, which you can track in the `pyproject.toml` file.
+This should give you a relatively barebones `pyproject.toml` file containing all your projects configuration, and a few minimal folders and files for your python project. Note the `.python-version` file: this is uv's way (and also e.g. pyenv's way) of tracking which python version is used for the project, and will be used in the project's virtual environment. The following steps add functionality and dependencies to the project, which you can track in the `pyproject.toml` file.
 
 ### Step 3
-We're going to add some code, and a linter to see whether our coding style adheres to some best-practice standards.
+We're going to add some code!
+
+Uv already created a folder structure and `__init__.py` with some minimal content, so let's update that a bit. You can come up with something yourself, or past the below code in `src/new_project/__init__.py`.
+
+```{python}
+# Goes in __init__.py
+
+def add(number1: int | float, number2: int | float) -> int:
+    """
+    Integer addition, if floats are provided they will be first 
+    converted to integers by rounding down
+
+    Examples:
+        >>> add(1, 2)
+        3
+
+        >>> add(2.3, 4.5)
+        6
+  
+    Args:
+        number1 (int | float): first number for addition
+        number2 (int | float): second number for addition
+  
+    Returns:
+        int: sum of (possibly rounded down) inputs
+    """
+    return int(number1) + int(number2)
+```
+
+### Step 4
+
+Let's add and run a linter/formatter to see if our code meets current best practices
+
+```{sh}
+$ uv add ruff
+$ uv run ruff check
+```
+
+### Step 5
+
+Let's add a testing framework to check our code for correctness. If you've used the code example above you can run a test on the examples in the docstring (i.e. a doctest), otherwise it is common to specify tests in a `tests` folder, e.g. in `tests/test_add.py`.
+
+```{sh}
+$ uv add pytest
+$ uv run pytest --doctest-modules src
+```
+
+### Step 6
+
+Now that we have a functioning and tested codebase, let's start thinking about publishing to pypi. 
+
 
 ## Assignment 2: Publishing a package to conda
 
