@@ -187,3 +187,99 @@ And that will be available as `cli` from the commandline once you've pip-install
 ## Assignment 2: Publishing a package to conda
 
 ## Assignment 3: Miscellaneous tips and tricks with github
+
+### github action for CI/CD
+#### step 1 
+Setting up a github action workflow. Create a `.github/workflows` Directory:
+```{sh}
+mkdir -p .github/workflows
+```
+#### step 2
+Define the workflow file. Create a yaml file (e.g. ci-cd.yaml) within the workflows directory to define the CI/CD pipeline.
+```{yaml}
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  push:
+    tags:
+      - 'v*'
+```
+The workflow is triggered on push/pull requests to the main branch, and when a new version tag (starting with "v") is pushed.
+```{yaml}
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9, 3.10, 3,11]
+```
+The build-and-test job runs on Ubuntu and uses a matrix strategy to test package across multiple python versions (3.9, 3.10, 3.11 in this case).
+```{yaml}
+    steps:
+      - name: Checkout code
+      uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+        python-verson: ${{ matrix.python-version }}
+
+      - name: Build package
+        runs: |
+          python -m pip install --upgrade pip
+          pip install build
+          python -m build
+
+      - name: Run tests
+        run: |
+          pip install pytest
+          pytest
+```
+The above steps include:
+- **Checkout code:** clone the repository to the runner.
+- **Set up Python:** configure python environment based on versions in the matrix.
+- **Build package:** build the package using the pyproject.toml file.
+- **Run tests:** install pytest and runs the test.
+### github container registry (GHCR)
+Define another workflow yaml file for containerize and publish (e.g. container-publish.yaml).
+```{yaml}
+name: Docker build and publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  containerize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Log in to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        runs: |
+          docker build -t ghcr.io/${{ github.repository_owner }}/my-python-project:latest .
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/my-python-project:latest
+```
+This workflow triggers on pushes that create tags starting with "v" (e.g. v1.0.0).
+Steps include:
+- **Checkout code:** Pulls your repository into the runner.
+- **Log in to GHCR:** Authenticates to GHCR using your github token.
+- **Build Docker image:** Uses the Dockerfile in your repository to build the image.
+- **Push Docker image:** Pushes the built image to GHCR.
+
