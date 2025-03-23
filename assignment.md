@@ -245,6 +245,41 @@ The above steps include:
 - **Build package:** build the package using the pyproject.toml file.
 - **Run tests:** install pytest and runs the test.
 ### github container registry (GHCR)
+#### step 1
+Define the dockerfile named `Dockerfile` for your repository.
+```dockerfile
+# Use an official Python runtime as a parent image.
+FROM python:3.9-slim
+
+# Prevent Python from buffering stdout and stderr.
+ENV PYTHONUNBUFFERED=1
+
+# Set the working directory in the container.
+WORKDIR /app
+
+# Copy the project files into the container.
+# Adjust file paths as necessary for your repository structure.
+COPY pyproject.toml .
+COPY package_publishing_example/ ./package_publishing_example/
+
+# Upgrade pip and install build tool.
+RUN pip install --upgrade pip
+RUN pip install build
+
+# Build the package (creates wheel and sdist in the dist/ folder).
+RUN python -m build
+
+# Install the package from the built wheel.
+RUN pip install $(ls dist/*.whl)
+
+# Optionally, run tests here if you have a test suite.
+# RUN pip install pytest && pytest
+
+# Define the default command to verify installation.
+# Replace with your application's start command if needed.
+CMD ["python", "-c", "import package_publishing_example; print('Package installed successfully!')"]
+```
+#### step 2
 Define another workflow yaml file for containerize and publish (e.g. container-publish.yaml).
 ```{yaml}
 name: Docker build and publish
