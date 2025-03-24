@@ -16,17 +16,28 @@ COPY pyproject.toml .
 COPY src/ ./src/
 COPY tests/ ./tests/
 
-# Update apt and install Git (optional, if needed for your build backend)
+# Update apt and install Git (if needed for your build backend)
 RUN apt-get update && \
     apt-get install -y git && \
     rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip and install build tool.
+# Modify pyproject.toml:
+# 1. Replace the dynamic version setting with a static version.
+# 2. Remove the [tool.uv-dynamic-versioning] section without removing the following header.
+RUN sed -i.bak 's/dynamic = \["version"\]/version = "0.1.0"/' pyproject.toml && \
+    rm pyproject.toml.bak && \
+    awk 'BEGIN {skip=0} \
+         /^\[tool\.uv-dynamic-versioning\]/{skip=1; next} \
+         /^\[/{skip=0} \
+         {if (!skip) print}' pyproject.toml > pyproject.tmp && \
+    mv pyproject.tmp pyproject.toml
+
+# Upgrade pip and install the build tool.
 RUN pip install --upgrade pip && \
     pip install build
 
-# Build the package (creates wheel and sdist in the dist/ folder) in editable mode.
-RUN pip install -e .
+# Build the package (creates wheel and sdist in the dist/ folder)
+RUN python -m build
 
 # Optionally, run tests if you have a test suite.
 RUN pip install pytest && pytest
