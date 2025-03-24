@@ -15,6 +15,7 @@ WORKDIR /app
 COPY pyproject.toml .
 COPY src/ ./src/
 COPY tests/ ./tests/
+COPY README.md .
 
 # Update apt and install Git (if needed for your build backend)
 RUN apt-get update && \
