@@ -22,13 +22,11 @@ RUN apt-get update && \
     pip install build
 
 # Build the package (creates wheel and sdist in the dist/ folder).
-RUN python -m build
+RUN pip install -e .
 
-# Install the package from the built wheel.
-RUN pip install $(ls dist/*.whl)
 
 # Optionally, run tests here if you have a test suite.
-# RUN pip install pytest && pytest
+RUN pip install pytest && pytest
 
 # Define the default command to verify installation.
 # Replace with your application's start command if needed.
