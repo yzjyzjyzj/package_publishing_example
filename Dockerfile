@@ -16,8 +16,10 @@ COPY src/ ./src/
 COPY tests/ ./tests/
 
 # Upgrade pip and install build tool.
-RUN pip install --upgrade pip
-RUN pip install build
+RUN apt-get update && \
+    apt-get install -y git && \
+    pip install --upgrade pip && \
+    pip install build
 
 # Build the package (creates wheel and sdist in the dist/ folder).
 RUN python -m build
