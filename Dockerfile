@@ -12,7 +12,7 @@ WORKDIR /app
 # Copy the project files into the container.
 # Adjust file paths as necessary for your repository structure.
 COPY pyproject.toml .
-COPY package_publishing_example/ ./package_publishing_example/
+COPY src/ ./src/
 COPY tests/ ./tests/
 
 # Upgrade pip and install build tool.
