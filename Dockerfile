@@ -1,9 +1,7 @@
-LABEL authors="zijiang"
-
-ENTRYPOINT ["top", "-b"]
-
 # Use an official Python runtime as a parent image.
 FROM python:3.9-slim
+
+LABEL authors="zijiang"
 
 # Prevent Python from buffering stdout and stderr.
 ENV PYTHONUNBUFFERED=1
@@ -15,6 +13,7 @@ WORKDIR /app
 # Adjust file paths as necessary for your repository structure.
 COPY pyproject.toml .
 COPY package_publishing_example/ ./package_publishing_example/
+COPY tests/ ./tests/
 
 # Upgrade pip and install build tool.
 RUN pip install --upgrade pip
