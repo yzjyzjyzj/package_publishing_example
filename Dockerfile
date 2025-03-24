@@ -39,7 +39,8 @@ RUN pip install --upgrade pip && \
 
 # Build the package (creates wheel and sdist in the dist/ folder)
 RUN python -m build
-
+# Install the built package.
+RUN pip install dist/*.whl
 # Optionally, run tests if you have a test suite.
 RUN pip install pytest && pytest
 
