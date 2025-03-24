@@ -6,6 +6,9 @@ LABEL authors="zijiang"
 # Prevent Python from buffering stdout and stderr.
 ENV PYTHONUNBUFFERED=1
 
+# Set a fallback version for uv-dynamic-versioning
+ENV UV_DYNAMIC_VERSIONING_FALLBACK_VERSION=0.1.0
+
 # Set the working directory in the container.
 WORKDIR /app
 
@@ -14,7 +17,7 @@ WORKDIR /app
 COPY pyproject.toml .
 COPY src/ ./src/
 COPY tests/ ./tests/
-
+COPY .git/ .
 # Upgrade pip and install build tool.
 RUN apt-get update && \
     apt-get install -y git && \
@@ -23,7 +26,6 @@ RUN apt-get update && \
 
 # Build the package (creates wheel and sdist in the dist/ folder).
 RUN pip install -e .
-
 
 # Optionally, run tests here if you have a test suite.
 RUN pip install pytest && pytest
